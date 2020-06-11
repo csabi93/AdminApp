@@ -1,0 +1,94 @@
+﻿
+<h2>BusParOfBusFuncs</h2>
+<div class="container">
+    <div align="center">
+
+    @(Html.Kendo().Grid<BLL.ViewModels.BusParOfBusFuncViewModel>()
+    .Name("Grid")
+    .Selectable()
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.ID);
+        columns.ForeignKey(p => p.BusParID, (System.Collections.IEnumerable)ViewData["buspars"], "ID",
+           "Code")
+           .Title("BusPar_Code").Width(200);
+
+        columns.ForeignKey(p => p.BusFuncID, (System.Collections.IEnumerable)ViewData["busfuncs"], "ID",
+            "Code")
+            .Title("BusFunc_Code").Width(200);
+
+        columns.Bound(c => c.Value_MaxCount);
+        columns.Bound(c => c.Value_FeatureOption);
+        columns.Bound(c => c.Value_DateInterval_From).Format("{0:d}");
+        columns.Bound(c => c.Value_DateInterval_To).Format("{0:d}");
+        columns.Bound(c => c.Comment);
+
+        columns.Command(command =>
+        {
+            command.Edit().Text("Módosítás");
+            command.Destroy().Text("Törlés");
+        }).Width(300).Title("Módosítás/Törlés");
+    })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+
+        .Model(model =>
+        {
+            model.Id(bus => bus.ID);
+
+            model.Field(bus => bus.ID).Editable(false);
+            model.Field(p => p.Value_FeatureOption).DefaultValue(null);
+            model.Field(p => p.Value_DateInterval_From);
+
+        }
+        )
+      .Events(events => events.Error("error_handler"))
+      .Read(read => read.Action("GetBusParOfBusFuncs", "BusParOfBus"))
+      .Update(update => update.Action("BusParOfBusFuncs_Update", "BusParOfBus"))
+      .Create(create => create.Action("BusParOfFuncs_Create", "BusParOfBus"))
+      .Destroy(destroy => destroy.Action("BusParOfFuncs_Destroy", "BusParOfBus"))
+        )
+    .Filterable(ftb => ftb.Mode(GridFilterMode.Menu))
+    .ToolBar(toolbar => { toolbar.Create().Text("Új BusParOfBusFunc Hozzáadás"); })
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("CustomPopUp"))
+    .Sortable()
+    .Events(events => events.Edit("insertPopupCaption"))
+    .Resizable(resize => resize.Columns(true))
+    .Selectable()
+    .Pageable(pageable =>
+    {
+        pageable.Refresh(true);
+        pageable.PageSizes(true);
+    })
+
+        )    
+                           
+       
+</div>
+</div>
+
+
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+</script>
+<script>
+ function insertPopupCaption(e) {
+ if (e.model.isNew()) 
+     $('.k-window-title').text("Új BusParOfBusFunc Hozzáadása");
+ else 
+     $('.k-window-title').text("BusParOfBusFunc Módosítása");
+}
+</script>

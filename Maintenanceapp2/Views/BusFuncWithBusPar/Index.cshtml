@@ -1,0 +1,157 @@
+﻿<h2>BusFunc_Code With BusPars</h2>
+<div align="center">
+    <div align="center">
+
+        @(Html.Kendo().Grid<BLL.ViewModels.BusParOfBusFuncViewModel>()
+    .Name("Grid")
+    .Selectable()
+    .ClientDetailTemplateId("template")
+    .HtmlAttributes(new { style = "height:1500px;" })
+    .Columns(columns =>
+    {
+
+        columns.Bound(c => c.ID);
+        columns.ForeignKey(p => p.BusParID, (System.Collections.IEnumerable)ViewData["buspars"], "ID",
+           "Code")
+           .Title("BusPars_Code").Width(200);
+
+        columns.ForeignKey(p => p.BusFuncID, (System.Collections.IEnumerable)ViewData["busfuncs"], "ID",
+            "Code")
+            .Title("BusFunc_Code").Width(200);
+        columns.Bound(c => c.Value_MaxCount);
+        columns.Bound(c => c.Value_FeatureOption);
+        columns.Bound(c => c.Value_DateInterval_From).Format("{0:d}") ;
+        columns.Bound(c => c.Value_DateInterval_To).Format("{0:d}") ;
+
+
+        columns.Command(command =>
+        {
+            command.Edit().Text("Módosítás"); ;
+            command.Destroy().Text("Törlés"); ;
+        }).Width(300).Title("Módosítás/Törlés"); ;
+
+    })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+
+        .Model(model =>
+        {
+            model.Id(bus => bus.ID);
+            model.Field(bus => bus.ID).Editable(true);
+
+
+        }
+
+        )
+
+      .Read(read => read.Action("GetBusParOfBusFuncs", "BusParOfBus"))
+      .Update(update => update.Action("BusFuncs_Update", "BusFunc"))
+      .Create(create => create.Action("ForeignKeyColumn_Create", "BusParOfBus"))
+      .Destroy(destroy => destroy.Action("BusFuncs_Destroy", "BusFunc"))
+      .Events(events => events.Error("error"))
+        )
+        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu))
+    .ToolBar(toolbar => toolbar.Create().Text("Új BusParOfBusFunc Hozzáadás"))
+    .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("CustomPopUp"))
+    .Sortable()
+     .Events(events => events.Edit("insertPopupCaption"))
+    .Selectable()
+    .Events(events =>
+        events.DataBound("dataBound"))
+    .Pageable(pageable =>
+    {
+        pageable.Refresh(true);
+        pageable.PageSizes(true);
+    })
+        )
+
+        <script id="template" type="text/kendo-tmpl">
+            @(Html.Kendo().Grid<BLL.ViewModels.BusParViewModel>()
+            .Name("grid_#=BusParID#")
+
+
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.ID);
+                columns.Bound(c => c.Code);
+                columns.Bound(c => c.Comment);
+                columns.Bound(c => c.ValueType);
+                columns.Bound(c => c.Name).Width(400);
+
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Read(read => read.Action("HierarchyBinding_BusPars", "BusFunc", new { BusParID = "#=BusParID#" }))
+
+            )
+            .Pageable()
+            .Sortable()
+
+            .ToClientTemplate()
+
+            )
+        </script>
+        <script>
+        function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+       
+        </script>
+        <script>
+    function dataBound() {
+        this.expandRow(this.tbody.find("tr.k-master-row").first());
+    }
+        </script>
+
+    </div>
+</div>
+  
+<script type="text/kendo-template" id="message">
+    <div class="k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error" style="margin: 0.5em; display: block; " data-for="#=field#" data-valmsg-for="#=field#" id="#=field#_validationMessage">
+        <span class="k-icon k-warning"> </span>#=message#<div class="k-callout k-callout-n"></div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    var validationMessageTmpl = kendo.template($("#message").html());
+
+    function error(args) {
+        if (args.errors) {
+            var grid = $("#Grid").data("kendoGrid");
+
+            grid.one("dataBinding", function (e) {
+                e.preventDefault();   // cancel grid rebind if error occurs
+
+                for (var error in args.errors) {
+                    showMessage(grid.editable.element, error, args.errors[error].errors);
+                }
+            });
+        }
+    }
+    function showMessage(container, name, errors) {
+        //add the validation message to the form
+        container.find("[data-valmsg-for=" + name + "],[data-val-msg-for=" + name + "]")
+        .replaceWith(validationMessageTmpl({ field: name, message: errors[0] }))
+    }
+</script>
+<script>
+ function insertPopupCaption(e) {
+ if (e.model.isNew()) 
+     $('.k-window-title').text("Új BusParOfBusFunc Hozzáadása");
+ else
+     $('.k-window-title').text("BusParOfBusFunc Módosítása");
+ 
+}
+</script>

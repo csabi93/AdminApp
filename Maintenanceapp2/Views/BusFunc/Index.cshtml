@@ -1,0 +1,105 @@
+﻿
+<h2>BusFuncs With TechFuncs</h2>
+<div align="center">
+    <div align="center" >
+
+    @(Html.Kendo().Grid<BLL.ViewModels.BusFuncViewModel>()
+    .Name("Grid")
+    .Selectable()
+    .ClientDetailTemplateId("template")
+
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.ID);
+        columns.Bound(c => c.Code);
+        columns.Bound(c => c.Name).Width(200);
+        columns.Bound(c => c.LocalizedTitle);
+        columns.Bound(c => c.DsbTileCssClass);
+        columns.ForeignKey(p => p.TechFuncID, (System.Collections.IEnumerable)ViewData["techfuncs"], "ID",
+         "Code")
+         .Title("TechFuncs").Width(200);
+        columns.Bound(c => c.FleetOnly);
+        columns.Bound(c => c.IsCombo);
+        columns.Bound(c => c.Comment).Width(200);
+        
+        columns.Command(command =>
+        {
+            command.Edit().Text("Módosítás");
+            command.Destroy().Text("Törlés");
+        }).Width(300).Title("Módosítás/Törlés"); ;
+
+    })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+
+        .Model(model =>
+        {
+            model.Id(bus => bus.ID);
+            model.Field(bus => bus.ID).Editable(false);
+
+        }
+        )
+      .Read(read => read.Action("GetAllBusFunc", "BusFunc"))
+      .Update(update => update.Action("BusFuncs_Update", "BusFunc"))
+      .Create(create => create.Action("BusFuncs_Create", "BusFunc"))
+      .Destroy(destroy => destroy.Action("BusFuncs_Destroy", "BusFunc"))
+
+        )
+    .Filterable(ftb => ftb.Mode(GridFilterMode.Menu))
+    .ToolBar(toolbar => toolbar.Create().Text("Új BusFunc Hozzáadás"))
+    .Editable(editable => editable.Mode(GridEditMode.PopUp))
+    .Sortable()
+     .Events(events => events.Edit("insertPopupCaption"))
+     .Resizable(resize => resize.Columns(true))
+    .Selectable()
+    .Events(events => events.DataBound("dataBound"))
+    .Pageable(pageable =>
+    {
+        pageable.Refresh(true);
+        pageable.PageSizes(true);
+    })
+        )
+
+  <script id="template" type="text/kendo-tmpl">
+            @(Html.Kendo().Grid<BLL.ViewModels.TechFuncViewModel> ()
+            .Name("grid_#=TechFuncID#")
+
+
+            .Columns(columns =>
+            {
+                columns.Bound(c => c.ID);
+                columns.Bound(c => c.Code).Width(110); ;
+                columns.Bound(c => c.Comment).Width(150); ;
+                columns.Bound(c => c.Title);
+
+            })
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .PageSize(10)
+                .Read(read => read.Action("HierarchyBinding_TechFuncs", "BusFunc", new { TechFuncID = "#=TechFuncID#" }))
+
+            )
+            .Pageable()
+            .Sortable()
+
+            .ToClientTemplate()
+
+            )
+        </script>
+        <script>
+    function dataBound() {
+        this.expandRow(this.tbody.find("tr.k-master-row").first());
+    }
+        </script>
+    </div>
+</div>  
+<script>
+ function insertPopupCaption(e) {
+ if (e.model.isNew()) 
+     $('.k-window-title').text("Új BusFunc Hozzáadása");
+ else
+     $('.k-window-title').text("BusFunc Módosítása");
+ 
+}
+</script>

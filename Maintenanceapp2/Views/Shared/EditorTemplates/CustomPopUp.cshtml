@@ -1,0 +1,84 @@
+﻿@model BLL.ViewModels.BusParOfBusFuncViewModel
+@using System.Collections;
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.BusFuncID)
+</div>
+
+<div class="editor-dropdown">
+
+    @(Html.Kendo().DropDownListFor(model => model.BusFuncID)
+
+   .HtmlAttributes(new { @st = "BusFID" })
+   .DataValueField("ID")
+   .DataTextField("Code")
+   .BindTo((System.Collections.IEnumerable)ViewData["busfuncs"])
+   .OptionLabel("Válassz")
+
+    )
+    @Html.ValidationMessageFor(model => model.BusFuncID)
+</div>
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.BusParID)
+</div>
+
+<div class="editor-dropdown">
+
+    @(Html.Kendo().DropDownListFor(model => model.BusParID)
+
+.HtmlAttributes(new { @id = Model.ID.ToString() })
+.DataValueField("ID")
+.DataTextField("Code")
+.Events(e => e.Change("change"))
+.BindTo((System.Collections.IEnumerable)ViewData["buspars"])
+.OptionLabel("Válassz")
+    )
+    @Html.ValidationMessageFor(model => model.BusParID)
+</div>
+
+
+<div class="editor-label">
+    @Html.LabelFor(model => model.Comment)
+</div>
+<div>
+    @(Html.Kendo().TextBoxFor(m => m.Comment))
+    @Html.ValidationMessageFor(model => model.Comment)
+</div>
+
+<div class="editor-label" id="countl">
+    @Html.LabelFor(model => model.Value_MaxCount)
+</div>
+
+<div id="count">
+    @(Html.Kendo().NumericTextBoxFor(model => model.Value_MaxCount))
+    @Html.ValidationMessageFor(model => model.Value_MaxCount)
+</div>
+
+<div id="divCheckl" class="editor-label">
+    @Html.LabelFor(model => model.Value_FeatureOption)
+</div>
+
+<div id="divCheck" style="padding-top:5px">
+    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; @(Html.Kendo().CheckBoxFor(model => model.Value_FeatureOption))
+    @Html.ValidationMessageFor(m => m.Value_FeatureOption)
+</div>
+
+<div id="date1l" class="dates">
+    @Html.LabelFor(model => model.Value_DateInterval_From)
+</div>
+
+<div id="date1" class="dates">
+    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; @(Html.Kendo().DateTimePickerFor(m => m.Value_DateInterval_From).Format("{0:d}"))
+    @Html.ValidationMessageFor(m => m.Value_DateInterval_From)
+</div>
+
+<div id="date2l" class="dates">
+    @Html.LabelFor(model => model.Value_DateInterval_To)
+</div>
+
+<div id="date2" class="dates">
+    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; @(Html.Kendo().DateTimePickerFor(m => m.Value_DateInterval_To).Format("{0:d}"))
+    @Html.ValidationMessageFor(m => m.Value_DateInterval_To)
+</div>
+

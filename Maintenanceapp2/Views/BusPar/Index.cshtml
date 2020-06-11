@@ -1,0 +1,65 @@
+﻿
+<h2>BusPars</h2>
+<div class="container">
+    <div align="center">
+
+        @(Html.Kendo().Grid<BLL.ViewModels.BusParViewModel>()
+    .Name("Grid")
+    .Selectable()
+
+     .HtmlAttributes(new { style = " width: 1000px;" })
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.ID);
+        columns.Bound(c => c.Code);
+        columns.Bound(c => c.Name);
+        columns.Bound(c => c.ValueType);
+        columns.Bound(c => c.Comment);
+        columns.Command(command =>
+        {
+            command.Edit().Text("Módosítás"); ;
+            command.Destroy().Text("Törlés"); ;
+        }).Width(300).Title("Módosítás/Törlés"); ;
+
+
+
+    })
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .ServerOperation(true)
+
+        .Model(model =>
+        {
+            model.Id(bus => bus.ID);
+            model.Field(bus => bus.ID).Editable(false);
+        }
+        )
+          .Read(read => read.Action("GetAllBusPars", "BusPar"))
+          .Update(update => update.Action("BusPars_Update", "BusPar"))
+          .Create(create => create.Action("BusPars_Create", "BusPar"))
+          .Destroy(destroy => destroy.Action("BusPars_Destroy", "BusPar"))
+
+        )
+        .Filterable(ftb => ftb.Mode(GridFilterMode.Menu))
+        .Events(events => events.Edit("insertPopupCaption"))
+       .ToolBar(toolbar => toolbar.Create().Text("Új BusPar Hozzáadás"))
+       .Editable(editable => editable.Mode(GridEditMode.PopUp))
+       .Sortable()
+       .Selectable()
+       .Pageable(pageable =>
+       {
+           pageable.Refresh(true);
+           pageable.PageSizes(true);
+       })
+        )
+    </div>
+</div>
+<script>
+ function insertPopupCaption(e) {
+ if (e.model.isNew()) 
+     $('.k-window-title').text("Új BusPar Hozzáadása");
+ else
+     $('.k-window-title').text("BusPar Módosítása");
+ 
+}
+</script>

@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIL", "Maintenanceapp2\UIL.csproj", "{F77C4EAC-A828-402F-A28F-83F485914FA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{389F7607-EA0C-4668-8A41-2B6AC42013C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{BD9BDB1B-8A6B-4B8D-BA17-832F0638CF0A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F77C4EAC-A828-402F-A28F-83F485914FA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77C4EAC-A828-402F-A28F-83F485914FA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F77C4EAC-A828-402F-A28F-83F485914FA5}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{F77C4EAC-A828-402F-A28F-83F485914FA5}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{389F7607-EA0C-4668-8A41-2B6AC42013C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{389F7607-EA0C-4668-8A41-2B6AC42013C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{389F7607-EA0C-4668-8A41-2B6AC42013C4}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{389F7607-EA0C-4668-8A41-2B6AC42013C4}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{BD9BDB1B-8A6B-4B8D-BA17-832F0638CF0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD9BDB1B-8A6B-4B8D-BA17-832F0638CF0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD9BDB1B-8A6B-4B8D-BA17-832F0638CF0A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD9BDB1B-8A6B-4B8D-BA17-832F0638CF0A}.Release|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {13DF9702-3780-4A14-9EC5-1D872EFAB58A}
+	EndGlobalSection
+EndGlobal

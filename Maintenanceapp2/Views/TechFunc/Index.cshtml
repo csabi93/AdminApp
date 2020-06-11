@@ -1,0 +1,60 @@
+﻿
+<h2>TechFuncs</h2>
+<div >
+    <div align="center">
+
+        @(Html.Kendo().Grid<BLL.ViewModels.TechFuncViewModel>()
+                .Name("Grid")
+                .Selectable()
+                .HtmlAttributes(new { style = " width: 1000px;" })
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.ID);
+                    columns.Bound(c => c.Code).Width(200);
+                    columns.Bound(c => c.Title).Width(200);
+                    columns.Bound(c => c.Comment).Width(150);
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("Módosítás");
+                        command.Destroy().Text("Törlés");
+                    }).Width(200).Title("Módosítás/Törlés"); ;
+
+                })
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .ServerOperation(true)
+                    .Model(model =>
+                    {
+                        model.Id(bus => bus.ID);
+                        model.Field(bus => bus.ID).Editable(false);
+                    }
+                    )
+                  .Read(read => read.Action("GetAllTechFunc", "TechFunc"))
+                  .Update(update => update.Action("TechFuncs_Update", "TechFunc"))
+                  .Create(create => create.Action("TechFuncs_Create", "TechFunc"))
+                  .Destroy(destroy => destroy.Action("TechFuncs_Destroy", "TechFunc"))
+
+                    )
+                .Filterable(ftb => ftb.Mode(GridFilterMode.Menu))
+                 .Events(events => events.Edit("insertPopupCaption"))
+                .ToolBar(toolbar => toolbar.Create().Text("Új TechFunc Hozzáadás"))
+                .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                .Sortable()
+                .Selectable()
+                .Pageable(pageable =>
+                {
+                    pageable.Refresh(true);
+                    pageable.PageSizes(true);
+                })
+        )
+    </div>
+</div>
+
+<script>
+ function insertPopupCaption(e) {
+ if (e.model.isNew()) 
+     $('.k-window-title').text("Új TechFunc Hozzáadása");
+ else
+     $('.k-window-title').text("TechFunc Módosítása");
+}
+</script>
